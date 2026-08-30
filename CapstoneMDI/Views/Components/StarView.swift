@@ -10,6 +10,7 @@ import SwiftUI
 struct StarView: View {
     
     let rating: Int
+    private let successColor = Color(red: 0.35, green: 1.0, blue: 0.55)
 
     var body: some View {
         HStack(spacing: 5) {
@@ -18,7 +19,7 @@ struct StarView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30)
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(successColor)
             }
         }
     }
@@ -26,7 +27,7 @@ struct StarView: View {
 
 #Preview("StarView Examples") {
     VStack(alignment: .leading, spacing: 12) {
-        HStack { StarView(rating: 3) }
+        HStack { StarView(rating: 4) }
     }
     .padding()
 }

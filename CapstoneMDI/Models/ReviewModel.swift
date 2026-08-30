@@ -8,8 +8,9 @@
 import Foundation
 import Combine
 
-struct Review: Codable {
+struct Review: Codable, Identifiable {
     
+    var id: UUID = UUID()
     var reviewTitle: String = ""
     var reviewText: String = ""
     var rating: Int? = nil

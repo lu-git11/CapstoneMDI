@@ -41,7 +41,6 @@ struct SignUpView: View {
                     
                     TextField("Username", text: $username)
                         .textFieldStyle(.roundedBorder)
-                        .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
                     SecureField("Password", text: $password)
@@ -67,7 +66,7 @@ struct SignUpView: View {
         let newUser = User(
             username: username,
             name: name,
-            password: password
+            password: User.hashPassword(password)
         )
         
         modelContext.insert(newUser)

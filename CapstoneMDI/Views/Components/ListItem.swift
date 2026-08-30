@@ -8,26 +8,25 @@
 import SwiftUI
 
 struct ListItems: View {
-    var workout: Workout
+    var routine: Routine
     
     var body: some View {
-        HStack(spacing: 20){
-            Image(workout.image)
+        HStack(spacing: 16){
+            Image(routine.image)
                 .resizable()
-                .cornerRadius(10)
-                .frame(width: 70, height: 80)
-                .padding(4)
-                .padding(.trailing, 16)
+                .scaledToFill()
+                .frame(width: 60, height: 60)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
                 
             VStack(alignment: .leading, spacing: 2){
-                Text(workout.title)
-                    .font(.title.bold())
+                Text(routine.title)
+                    .font(.headline)
                     .foregroundStyle(Color(.label))
-                Text("by: \(workout.coach)")
-                    .font(.title2)
+                Text("by: \(routine.coach)")
+                    .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
             }
         }
-        .padding(.vertical, -6)
+        .padding(.vertical, 4)
     }
 }

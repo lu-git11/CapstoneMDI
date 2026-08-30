@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LoginView: View {
     
     @StateObject private var viewModel: LoginViewModel
+    @Environment(\.modelContext) private var modelContext
         
     init(authService: AuthServiceProtocol = AuthService()) {
         _viewModel = StateObject(wrappedValue: LoginViewModel(authService: authService))
@@ -24,6 +26,8 @@ struct LoginView: View {
                     
                     TextField("Username", text: $viewModel.username)
                         .textFieldStyle(.roundedBorder)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                         .accessibilityIdentifier("username_field")
                     
                     SecureField("Password", text: $viewModel.password)
@@ -37,7 +41,7 @@ struct LoginView: View {
                     }
                     
                     Button {
-                        Task { await viewModel.login() }
+                        Task { await viewModel.login(context: modelContext) }
                     } label: {
                         Text("Login")
                             .font(.headline.bold())

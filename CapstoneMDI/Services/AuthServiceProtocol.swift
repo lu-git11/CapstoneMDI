@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
 protocol AuthServiceProtocol {
-    func login(username: String, password: String) async throws -> User
+    func login(username: String, password: String, context: ModelContext) async throws -> User
+
 }
 
 enum AuthError: Error, LocalizedError {

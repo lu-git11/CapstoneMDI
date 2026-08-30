@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftData
 
 @MainActor
 final class LoginViewModel: ObservableObject {
@@ -22,12 +23,16 @@ final class LoginViewModel: ObservableObject {
         self.authService = authService
     }
     
-    func login() async {
+    func login(context: ModelContext) async {
         errorMessage = nil
         isLoading = true
+        defer { isLoading = false }
         
         do {
-            loggedIn = try await authService.login(username: username, password: password)
+            loggedIn = try await authService.login(
+                username: username,
+                password: password,
+                context: context)
             
         } catch {
             errorMessage = error.localizedDescription

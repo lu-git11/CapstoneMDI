@@ -17,7 +17,7 @@ struct WelcomeView: View {
         NavigationStack {
             ZStack { Background.gradient3.ignoresSafeArea()
                 NavigationLink(isActive: $navigateToWorkout) {
-                    DashboardView()
+                    DashboardView(user: user)
                 } label: {
                     EmptyView()
                 }
@@ -31,7 +31,7 @@ struct WelcomeView: View {
                 }
                 .padding()
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     navigateToWorkout = true
                     }
                 }
