@@ -33,6 +33,7 @@ final class LoginViewModel: ObservableObject {
                 username: username,
                 password: password,
                 context: context)
+            Reminder.scheduleLoginReminderIfNeeded()
             
         } catch {
             errorMessage = error.localizedDescription

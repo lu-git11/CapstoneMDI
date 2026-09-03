@@ -7,9 +7,12 @@
 
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 @main
 struct CapstoneMDIApp: App {
+    
+    private let notificationDelegate = NotificationDelegate()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -30,10 +33,22 @@ struct CapstoneMDIApp: App {
         }
     }()
     
+    init() {
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+    }
+    
     var body: some Scene {
         WindowGroup {
             LoginView()
         }
         .modelContainer(sharedModelContainer)
+    }
+}
+
+final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
     }
 }

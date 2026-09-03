@@ -23,6 +23,14 @@ struct AddEditView: View {
     @State var image: String = "push"
     @State private var newReview: Bool = false
     
+    private func resetForm() {
+        title = ""
+        coach = ""
+        summary = ""
+        rating = 0
+        image = "push"
+    }
+    
     init(routine: Routine, user: User){
             self.routine = routine
             self.user = user
@@ -61,6 +69,7 @@ struct AddEditView: View {
                 .toolbar{
                     ToolbarItem(placement: .confirmationAction){
                         Button("Save"){
+                            let isAdding = self.routine.title.isEmpty
                             routine.title = title
                             routine.coach = coach
                             routine.summary = summary
@@ -70,12 +79,18 @@ struct AddEditView: View {
                             routine.userID = user.id
                             modelContext.insert(routine) // no-op if already tracked
                             try? modelContext.save()
+                            if isAdding { resetForm() }
                             dismiss()
                         }
                         .disabled(title.isEmpty)
                     }
                 }
             }//end nav stack
+            .onDisappear {
+                if routine.title.isEmpty { // Add mode
+                    resetForm()
+                }
+            }
         }//end view
     }//end struct
 

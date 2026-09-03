@@ -18,7 +18,7 @@ struct StarView: View {
                 Image(systemName: number <= self.rating ? "figure.strengthtraining.traditional" : "figure.strengthtraining.traditional.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 30)
+                    .frame(width: 20)
                     .foregroundStyle(successColor)
             }
         }

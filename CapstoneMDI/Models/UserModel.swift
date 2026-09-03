@@ -16,7 +16,6 @@ final class User: Hashable, Identifiable {
     var username: String
     var name: String
     var password: String
-    var reviews: [Review] = []
     
     init(username: String, name: String, password: String) {
         self.id = UUID()

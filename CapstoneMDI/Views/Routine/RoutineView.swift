@@ -29,7 +29,7 @@ struct RoutineView: View {
 
     var body: some View {
          ZStack {
-             Background.gradient2.ignoresSafeArea()
+             Background.gradient3.ignoresSafeArea()
              
              List {
                  if routines.isEmpty {
@@ -61,6 +61,8 @@ struct RoutineView: View {
                                      }
                                  }
                                  Spacer()
+                                 StarView(rating: routine.rating ?? 0)
+                                     
                              }
                              .padding(12)
                              .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))

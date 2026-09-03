@@ -85,7 +85,7 @@ struct ExerciseView: View {
                 .padding(.bottom, 20)
             }
         }
-        .background(Background.gradient2)
+        .background(Background.gradient3)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {

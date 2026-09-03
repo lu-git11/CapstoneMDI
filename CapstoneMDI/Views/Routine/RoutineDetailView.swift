@@ -14,7 +14,6 @@ struct RoutineDetailView: View {
     let user: User
     
     @State private var showEdit: Bool = false
-    //@State private var showExercisePicker: Bool = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
