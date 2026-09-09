@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CoachView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Coach.name, order: .forward) private var coaches: [Coach]
     @State private var selectedCoach: Coach? = nil
 
     private let columns = [
@@ -21,11 +24,14 @@ struct CoachView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(Array(Coach.sampleCoaches.enumerated()), id:        \.element.id) { index, coach in
+                    ForEach(Array(coaches.enumerated()), id: \.element.id) { index, coach in
                         Button {
                             selectedCoach = coach
                         } label: {
-                            CoachTile(coach: coach, accent: CoachTile.palette[index % CoachTile.palette.count])
+                            NewCoachTile(
+                                coach: coach,
+                                index: index
+                            )
                             }
                             .buttonStyle(.plain)
                         }
@@ -41,15 +47,24 @@ struct CoachView: View {
                         .minimumScaleFactor(0.8)
             }
         }
-        .sheet(item: $selectedCoach) {coach in
+            .onAppear {
+                if coaches.isEmpty {
+                    for sampleCoach in Coach.sampleCoaches {
+                        modelContext.insert(sampleCoach)
+                    }
+                    try? modelContext.save()
+                }
+            }
+            .sheet(item: $selectedCoach) {coach in
             CoachRatingView(coach: coach)
         }
     }
 }
 
-private struct CoachTile: View {
+// 4. Declared the nested tile layout card grid component architecture securely
+private struct NewCoachTile: View {
     let coach: Coach
-    let accent: [Color]
+    let index: Int
 
     static let palette: [[Color]] = [
         [Color(hex: "#40576D"), Color(hex: "#7890A7")],
@@ -61,7 +76,11 @@ private struct CoachTile: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                LinearGradient(colors: accent, startPoint: .topLeading, endPoint: .bottomTrailing)
+                LinearGradient(
+                    colors: Self.palette[index % Self.palette.count],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
 
                 Image(systemName: coach.imageSystemName)
                     .resizable()
@@ -73,7 +92,7 @@ private struct CoachTile: View {
                 VStack {
                     HStack {
                         Spacer()
-                        if let saved = CoachRatingStorage.rating(for: coach) {
+                        if let saved = coach.savedRating {
                             HStack(spacing: 3) {
                                 Image(systemName: "star.fill")
                                     .font(.caption2)
@@ -108,12 +127,13 @@ private struct CoachTile: View {
             }
         }
         .aspectRatio(1, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 4))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
 #Preview {
     NavigationStack {
         CoachView()
+            .modelContainer(for: [Coach.self], inMemory: true)
     }
 }

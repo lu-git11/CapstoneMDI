@@ -69,12 +69,12 @@ struct ExerciseView: View {
                         }
                     }
 
-                    // Add Exercise Button targeting the active section
                     Button {
                         showExercisePicker = true
                     } label: {
                         Label("Add Exercise to \(selectedSection == "All" ? "Routine" : selectedSection)", systemImage: "plus.circle.fill")
                             .font(.headline)
+                            .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
@@ -156,7 +156,7 @@ struct ExerciseView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(Color.white.opacity(0.12))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.white)
                     .clipShape(Capsule())
                 }
             }

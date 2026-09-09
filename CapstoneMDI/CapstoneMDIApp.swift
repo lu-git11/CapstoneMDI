@@ -19,7 +19,8 @@ struct CapstoneMDIApp: App {
             User.self,
             ExerciseLog.self,
             Routine.self,
-            Exercise.self
+            Exercise.self,
+            Coach.self
         ])
         do {
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

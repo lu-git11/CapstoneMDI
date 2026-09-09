@@ -15,7 +15,8 @@ struct DashboardView: View {
     @State private var selectedGroup: DashboardGroup?
     @State private var isShowingAddGroup = false
     @State private var showBanner: Bool = false
-
+    
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -28,7 +29,7 @@ struct DashboardView: View {
                         HStack(spacing: 12) {
                             Image(systemName: "figure.run.circle.fill")
                                 .font(.title2)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.orange)
                             
                             Text("Don't forget to work out today!")
                                 .font(.subheadline.bold())
@@ -37,21 +38,28 @@ struct DashboardView: View {
                             Spacer()
                             
                             Button {
-                                withAnimation { showBanner = false }
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    showBanner = false
+                                }
                             } label: {
                                 Image(systemName: "xmark")
                                     .font(.caption.bold())
                                     .foregroundStyle(.secondary)
+                                    .padding(6)
+                                    .background(Color.primary.opacity(0.08), in: Circle())
                             }
                         }
-                        .padding(12)
-                        .background(Color.red.opacity(0.6), in: RoundedRectangle(cornerRadius: 16))
+                        .padding(14)
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(Color.orange.opacity(0.6), lineWidth: 3)
+                        )
                         .padding(.horizontal, 16)
-                        .padding(.top, 8)
+                        .padding(.top, 12)
                         .transition(.move(edge: .top).combined(with: .opacity))
                     }
                     
-                    // Use a simple VStack of rows instead of a nested List inside List
                     ScrollView {
                         VStack(spacing: 10) {
                             NavigationLink(destination: RoutineView(user: user)) {
@@ -95,7 +103,6 @@ struct DashboardView: View {
                 }
             }
             .onAppear {
-                // Fix incorrect assignment syntax
                 showBanner = Reminder.shouldShowBanner()
             }
             .navigationDestination(for: DashboardGroup.self) { group in
@@ -104,9 +111,7 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Dashboard")
-                        .font(.system(size: 20, weight: .bold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -130,13 +135,12 @@ struct DashboardView: View {
     // Move helper into non-local scope and keep it private
     @ViewBuilder
     private func dashboardRow(icon: String, title: String, subtitle: String?) -> some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 16) {
             Image(systemName: icon)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.white)
+                .font(.title.weight(.semibold))
+                .foregroundStyle(.blue)
                 .frame(width: 40, height: 40)
-                .background(Color.orange.gradient, in: RoundedRectangle(cornerRadius: 10))
-
+                
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.headline)
@@ -146,22 +150,24 @@ struct DashboardView: View {
                     Text(subtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .lineLimit(1)
                 }
             }
 
             Spacer()
+            Image(systemName: "chevron.right")
+                .font(.footnote.bold())
+                .foregroundColor(.secondary.opacity(0.7))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
+        .padding(14)
         .background(
-            ZStack {
-                Color.blue.opacity(0.6)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                    .fill(.ultraThinMaterial)
-                    )
-            }
+            RoundedRectangle(cornerRadius: 18)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 18)
+                        .stroke(Color.blue.opacity(0.6), lineWidth: 0.5)
+                )
         )
     }
 }

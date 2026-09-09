@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct InteractiveStarPicker: View {
     @Binding var rating: Int
@@ -34,6 +35,7 @@ struct CoachRatingView: View {
     let coach: Coach
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @State private var rating: Int = 0
 
     var body: some View {
@@ -84,7 +86,8 @@ struct CoachRatingView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        CoachRatingStorage.save(rating, for: coach)
+                        coach.savedRating = rating
+                        try? modelContext.save()
                         dismiss()
                     }
                     .disabled(rating == 0)
@@ -94,7 +97,7 @@ struct CoachRatingView: View {
                 }
             }
             .onAppear {
-                rating = CoachRatingStorage.rating(for: coach) ?? 0
+                rating = coach.savedRating ?? 0
             }
         }
     }
@@ -102,4 +105,5 @@ struct CoachRatingView: View {
 
 #Preview {
     CoachRatingView(coach: Coach.sampleCoaches[0])
+        .modelContainer(for: [Coach.self], inMemory: true)
 }

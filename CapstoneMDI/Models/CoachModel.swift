@@ -6,42 +6,41 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Coach: Identifiable, Codable, Hashable {
-    let id: String
-    let name: String
-    let specialty: String
-    let bio: String
-    let imageSystemName: String
+@Model
+final class Coach: Identifiable {
+    @Attribute(.unique) var id: UUID = UUID()
+    var name: String
+    var specialty: String
+    var bio: String
+    var imageSystemName: String
+    var savedRating: Int?
 
-    init(id: String, name: String, specialty: String, bio: String, imageSystemName: String = "person.crop.circle.fill") {
-        self.id = id
+    init(name: String, specialty: String, bio: String, imageSystemName: String = "person.crop.circle.fill", savedRating: Int? = nil) {
         self.name = name
         self.specialty = specialty
         self.bio = bio
         self.imageSystemName = imageSystemName
+        self.savedRating = savedRating
     }
 }
 
 extension Coach {
     static let sampleCoaches: [Coach] = [
-        Coach(id: "jim-carter",
-              name: "Jim Carter",
+        Coach(name: "Jim Carter",
               specialty: "Strength & Conditioning",
               bio: "Specializes in powerlifting fundamentals and progressive overload.",
               imageSystemName: "figure.strengthtraining.traditional"),
-        Coach(id: "maria-alvarez",
-              name: "Maria Alvarez",
+        Coach(name: "Maria Alvarez",
               specialty: "HIIT & Cardio",
               bio: "Builds high-intensity interval programs for fat loss and endurance.",
               imageSystemName: "figure.run"),
-        Coach(id: "david-kim",
-              name: "David Kim",
+        Coach(name: "David Kim",
               specialty: "Mobility & Recovery",
               bio: "Focuses on flexibility, injury prevention, and recovery.",
               imageSystemName: "figure.flexibility"),
-        Coach(id: "sara-thompson",
-              name: "Sara Thompson",
+        Coach(name: "Sara Thompson",
               specialty: "Nutrition Coaching",
               bio: "Pairs training programs with sustainable nutrition habits.",
               imageSystemName: "leaf.fill")
