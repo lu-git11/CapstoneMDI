@@ -77,7 +77,14 @@ struct ExerciseView: View {
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+                            .background(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .fill(.ultraThinMaterial)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 14)
+                                            .fill(Color.accentColor.opacity(0.6))
+                                    )
+                            )
                     }
                     .padding(.top, 8)
                 }
